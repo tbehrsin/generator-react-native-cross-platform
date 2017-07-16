@@ -1,0 +1,33 @@
+version: '2'
+services:
+  mongo:
+    image: mongo:3.5
+    command: mongod --noprealloc --smallfiles --dbpath /data/db --nojournal --oplogSize 16 --noauth --bind_ip_all
+    network_mode: bridge
+    environment:
+      TERM: xterm
+    restart: always
+    volumes:
+      - /data/db
+
+  redis:
+    image: redis:3.2.9
+    network_mode: bridge
+    restart: always
+
+  server:
+    build: .
+    volumes:
+      - "/app/lib"
+      - "./src:/app/src"
+      - "./webpack.config.js:/app/webpack.config.js:ro"
+    network_mode: bridge
+    env_file: .env
+    environment:
+      - MONGODB_URI=mongodb://mongo/<%= projectName %>
+      - REDIS_URI=redis://redis:6379
+      - VIRTUAL_HOST=<%= domainName %>
+    links:
+      - mongo
+      - redis
+    restart: always

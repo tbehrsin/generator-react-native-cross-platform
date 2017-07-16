@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{{#if title}}{{title}} - {{/if}}<%= company %></title>
+<meta name="viewport" content="width=device-width"/>
+<link rel="stylesheet" media="screen" href="/assets/css/site.css"/>
+<script src="/assets/js/prism.js"></script>
+</head>
+<body>
+  <nav class="top-bar{{#if lightContent}} light-content{{/if}}">
+    <div class="body-wrapper">
+      <div class="company-logo">
+        <a href="/">
+          <i class="lnr lnr-apartment"></i>
+          <h1><%= company %></h1>
+        </a>
+      </div>
+      <ul>
+      </ul>
+    </div>
+  </nav>
+  {{{body}}}
+</body>
+</html>
