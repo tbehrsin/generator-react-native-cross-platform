@@ -1,5 +1,6 @@
 
 const Generator = require('yeoman-generator');
+const rename = require('gulp-rename');
 
 const deps = (deps) => Object.keys(deps).map(name => {
   if(deps[name] === '*') {
@@ -112,8 +113,13 @@ module.exports = class extends Generator {
       this.fs.write(this.clientDestinationPath('package.json'), JSON.stringify(pkg, null, 2));
     }
 
+    this.registerTransformStream(rename((path) => {
+      if(path.basename[0] === '_') path.basename = `.${path.basename.substring(1)}`;
+      return path;
+    }));
+
     this.fs.copyTpl(
-      this.templatePath('.*'),
+      this.templatePath('_*'),
       this.destinationRoot(),
       this.answers
     );
@@ -130,19 +136,7 @@ module.exports = class extends Generator {
     );
 
     this.fs.copyTpl(
-      this.templatePath('client/**/.*'),
-      this.clientDestinationPath(),
-      this.answers
-    );
-
-    this.fs.copyTpl(
       this.templatePath('server/**/*'),
-      this.serverDestinationPath(),
-      this.answers
-    );
-
-    this.fs.copyTpl(
-      this.templatePath('server/**/.*'),
       this.serverDestinationPath(),
       this.answers
     );
