@@ -24,6 +24,7 @@ module.exports = class extends Generator {
       type: 'input',
       name: 'projectTitle',
       message: 'Your project title',
+      default: this.appname.replace(/(^|-)(\w)/g, (g, g1, g2) => g2.toUpperCase()),
       store: true
     }, {
       type: 'input',
